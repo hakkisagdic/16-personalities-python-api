@@ -32,10 +32,7 @@ def questions():
         quiz_models = json.loads(raw_models)
         questions = quiz_models["questions"]
 
-        question_array = []
-        for idx in questions:
-            question_array.append(questions[idx]['q'])
-
+        question_array = [questions[idx]['q'] for idx in questions]
         # questions = [x['q'] for x in obj['questions']]
 
         return jsonify(question_array)
@@ -111,13 +108,10 @@ def result():
     for idx in targets:
         left_score = targets[idx]["left_trait_score"]
         right_score = targets[idx]["right_trait_score"]
-        if left_score > right_score:
+        if left_score > right_score or right_score <= left_score:
             result += targets[idx]["left_trait"]
-        elif right_score > left_score:
-            result += targets[idx]["right_trait"]
         else:
-            result += targets[idx]["left_trait"]
-
+            result += targets[idx]["right_trait"]
     dateTimeObj = str(datetime.now())
 
     values_to_write = [dateTimeObj, user, result]
